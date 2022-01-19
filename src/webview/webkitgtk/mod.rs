@@ -245,12 +245,7 @@ impl InnerWebView {
 
     // Transparent
     if attributes.transparent {
-      webview.set_background_color(&RGBA {
-        red: 0.,
-        green: 0.,
-        blue: 0.,
-        alpha: 0.,
-      });
+      webview.set_background_color(&RGBA::new(0., 0., 0., 0.));
     }
 
     // File drop handling
