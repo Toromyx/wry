@@ -81,7 +81,7 @@ fn main() -> wry::Result<()> {
       webviews
         .get_mut(&id)
         .unwrap()
-        .evaluate_script("openWindow()")
+        .evaluate_script("openWindow()", || ())
         .unwrap();
       trigger = false;
     }

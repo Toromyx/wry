@@ -412,8 +412,8 @@ impl WebView {
   /// [`WebView`]. Use [`EventLoopProxy`] and a custom event to send scripts from other threads.
   ///
   /// [`EventLoopProxy`]: crate::application::event_loop::EventLoopProxy
-  pub fn evaluate_script(&self, js: &str) -> Result<()> {
-    self.webview.eval(js)
+  pub fn evaluate_script(&self, js: &str, callback: impl FnOnce(String) -> () + 'static) -> Result<()> {
+    self.webview.eval(js, callback)
   }
 
   /// Launch print modal for the webview content.

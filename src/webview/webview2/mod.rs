@@ -289,7 +289,7 @@ impl InnerWebView {
               match super::rpc_proxy(&window, js, rpc_handler) {
                 Ok(result) => {
                   if let Some(script) = result {
-                    Self::execute_script(&webview, script)?;
+                    Self::execute_script(&webview, script, |_| ())?;
                   }
                 }
                 Err(e) => {
@@ -545,21 +545,24 @@ impl InnerWebView {
     )
   }
 
-  fn execute_script(webview: &ICoreWebView2, js: String) -> windows::core::Result<()> {
+  fn execute_script(webview: &ICoreWebView2, js: String, callback: impl FnOnce(String) -> () + 'static) -> windows::core::Result<()> {
     unsafe {
       webview.ExecuteScript(
         js,
-        ExecuteScriptCompletedHandler::create(Box::new(|_, _| (Ok(())))),
+        ExecuteScriptCompletedHandler::create(Box::new(|_, result_object_as_json| {
+          callback(result_object_as_json);
+          Ok(())
+        })),
       )
     }
   }
 
   pub fn print(&self) {
-    let _ = self.eval("window.print()");
+    let _ = self.eval("window.print()", |_| ());
   }
 
-  pub fn eval(&self, js: &str) -> Result<()> {
-    Self::execute_script(&self.webview, js.to_string())
+  pub fn eval(&self, js: &str, callback: impl FnOnce(String) -> () + 'static) -> Result<()> {
+    Self::execute_script(&self.webview, js.to_string(), callback)
       .map_err(|err| Error::WebView2Error(webview2_com::Error::WindowsError(err)))
   }
 
