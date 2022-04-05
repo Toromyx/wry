@@ -1,5 +1,12 @@
 # Changelog
 
+## \[0.14.1]
+
+- On Windows and Linux, disable resizing maximized borderless windows.
+  - [313eaea](https://github.com/tauri-apps/wry/commit/313eaea0ff123bddbc8b5c337ded05d464d3dfaa) fix(win,linux): disable resizing maximized borderless windows ([#533](https://github.com/tauri-apps/wry/pull/533)) on 2022-03-30
+- Fixes a memory leak on the custom protocol response body on macOS.
+  - [36b985e](https://github.com/tauri-apps/wry/commit/36b985e939f4769f9835b4865ee1013229ec7539) fix(macos): custom protocol memory leak ([#539](https://github.com/tauri-apps/wry/pull/539)) on 2022-04-03
+
 ## \[0.14.0]
 
 - Added `close_devtools` function to `Webview`.
